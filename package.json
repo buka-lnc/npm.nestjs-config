@@ -1,0 +1,77 @@
+{
+  "name": "@buka/nestjs-config",
+  "version": "1.0.0",
+  "description": "An easy to use nestjs config module",
+  "main": "dist/umd/src/index.js",
+  "module": "dist/esm/src/index.js",
+  "types": "dist/esm/src/index.d.ts",
+  "scripts": {
+    "build": "npm run clean && ./build/build.sh",
+    "clean": "rm -rf ./dist/*",
+    "dev": "npm run clean && ./build/watch.sh",
+    "prepare": "ts-patch install -s && is-ci || husky install",
+    "prepublishOnly": "npm run build",
+    "release": "standard-version",
+    "release:alpha": "standard-version --prerelease alpha",
+    "test": "jest"
+  },
+  "keywords": [
+    "nestjs nest module config configuration nconf dotenv env environment"
+  ],
+  "author": "Val.istar.Guo <val.istar.guo@gmail.com>",
+  "license": "MIT",
+  "homepage": "https://github.com/buka-lnc/npm.nestjs-config/#readme",
+  "bugs": {
+    "url": "https://github.com/buka-lnc/npm.nestjs-config/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/buka-lnc/npm.nestjs-config.git"
+  },
+  "directories": {
+    "build": "npm run clean && ./build/build.sh",
+    "clean": "rm -rf ./dist/*",
+    "dev": "npm run clean && ./build/watch.sh",
+    "prepare": "ts-patch install -s && is-ci || husky install",
+    "prepublishOnly": "npm run build",
+    "release": "standard-version",
+    "release:alpha": "standard-version --prerelease alpha",
+    "test": "jest"
+  },
+  "devDependencies": {
+    "@buka/eslint-config": "^1.5.0",
+    "@commitlint/cli": "^18.4.4",
+    "@commitlint/config-conventional": "^18.4.4",
+    "@jest/globals": "^29.7.0",
+    "@nestjs/common": "^10.3.0",
+    "@rushstack/eslint-patch": "^1.5.1",
+    "@types/node": "^20.9.0",
+    "@types/object-path": "^0.11.4",
+    "@types/ramda": "^0.29.9",
+    "@typescript-eslint/eslint-plugin": "^6.10.0",
+    "@typescript-eslint/parser": "^6.10.0",
+    "eslint": "^8.53.0",
+    "husky": "^8.0.3",
+    "is-ci": "^3.0.1",
+    "jest": "^29.7.0",
+    "jest-mock": "^29.7.0",
+    "standard-version": "^9.5.0",
+    "ts-jest": "^29.1.1",
+    "ts-node": "^10.9.1",
+    "ts-patch": "^3.0.2",
+    "typescript": "^5.2.2",
+    "typescript-transform-paths": "^3.4.6"
+  },
+  "packageManager": "pnpm@8.14.0",
+  "dependencies": {
+    "change-case-all": "^2.1.0",
+    "class-transformer": "^0.5.1",
+    "class-validator": "^0.14.0",
+    "dotenv": "^16.3.1",
+    "object-path": "^0.11.8",
+    "ramda": "^0.29.1"
+  },
+  "peerDependencies": {
+    "@nestjs/common": "^10.3.0"
+  }
+}
