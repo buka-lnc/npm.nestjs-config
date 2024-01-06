@@ -11,17 +11,17 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - run:
-      - uses: GoogleCloudPlatform/release-please-action@v3
+      - id: packageJson
+        run: echo "name=$(cat package.json | jq -r '.name')"" >> $GITHUB_OUTPUT
+      - uses: GoogleCloudPlatform/release-please-action@v4
         id: release
         with:
           token: ${{secrets.RELEASE_TOKEN}}
           release-type: node
-          package-name: "@buka/nestjs-config"
+          package-name: ${{ steps.packageJson.outputs.name }}
       - uses: actions/setup-node@v3
         with:
           node-version: 18
-          registry-url: "https://registry.npmjs.org"
         if: ${{ steps.release.outputs.release_created }}
       - run: corepack pnpm install
         if: ${{ steps.release.outputs.release_created }}
