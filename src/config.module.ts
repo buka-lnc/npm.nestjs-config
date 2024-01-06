@@ -28,10 +28,12 @@ export class ConfigModule extends ConfigurableModuleClass {
         for (const key of Object.getOwnPropertyNames(instance)) {
           const configName = Reflect.getMetadata(CONFIG_NAME_METADATA_KEY, ConfigProviderClass, key)
           if (configName) {
-            instance[key] = subConfig[toCamelCase(configName)]
+            const value = objectPath.get(config, configName)
+            if (value !== undefined) instance[key] = value
           }
 
-          instance[key] = subConfig[toCamelCase(key)]
+          const value = subConfig[toCamelCase(key)]
+          if (value !== undefined) instance[key] = value
         }
 
         const errors = await validate(instance)

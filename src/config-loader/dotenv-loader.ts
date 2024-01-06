@@ -19,10 +19,10 @@ export function dotenvLoader(filepath: string, separator = '__'): ConfigLoader {
     const content = await readFile(filepath)
     const config = dotenv.parse(content)
 
-    const result = {}
+    let result = {}
 
     for (const key of Object.keys(config)) {
-      R.assocPath(key.split(separator), config[key], result)
+      result = R.assocPath(key.split(separator), config[key], result)
     }
 
     return result

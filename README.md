@@ -41,11 +41,15 @@ Then, define a `AppConfig` class with the `@Configuration()` decorator. And add 
 ```typescript
 // app.config.ts
 import { Configuration } from "@buka/nestjs-config";
-import { IsString, IsOptional, IsIn } from "class-validator";
+import { IsString, IsOptional, IsIn, isIp } from "class-validator";
 import { Split } from "@miaooo/class-transformer-split";
 
 @Configuration()
 export class AppConfig {
+  // set default value
+  @IsIp()
+  host = "0.0.0.0";
+
   // CACHE_DIR in .env
   @IsString()
   @IsOptional()
