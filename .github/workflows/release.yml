@@ -10,14 +10,14 @@ jobs:
   release:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v4
+      - run:
       - uses: GoogleCloudPlatform/release-please-action@v3
         id: release
         with:
           token: ${{secrets.RELEASE_TOKEN}}
           release-type: node
-          package-name: "keq"
-      - uses: actions/checkout@v4
-        if: ${{ steps.release.outputs.release_created }}
+          package-name: "@buka/nestjs-config"
       - uses: actions/setup-node@v3
         with:
           node-version: 18
