@@ -4,21 +4,23 @@ on:
       - master
       - main
 name: Release
+
 permissions:
   id-token: write
+  contents: write
+  pull-requests: write
+
 jobs:
   release:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - id: packageJson
-        run: echo "name=$(cat package.json | jq -r '.name')"" >> $GITHUB_OUTPUT
       - uses: GoogleCloudPlatform/release-please-action@v4
         id: release
         with:
-          token: ${{secrets.RELEASE_TOKEN}}
+          token: ${{secrets.GITHUB_TOKEN}}
           release-type: node
-          package-name: ${{ steps.packageJson.outputs.name }}
+      - uses: actions/checkout@v4
+        if: ${{ steps.release.outputs.release_created }}
       - uses: actions/setup-node@v3
         with:
           node-version: 18
