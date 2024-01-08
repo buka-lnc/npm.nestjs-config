@@ -28,16 +28,6 @@
     "type": "git",
     "url": "git+https://github.com/buka-lnc/npm.nestjs-config.git"
   },
-  "directories": {
-    "build": "npm run clean && ./build/build.sh",
-    "clean": "rm -rf ./dist/*",
-    "dev": "npm run clean && ./build/watch.sh",
-    "prepare": "ts-patch install -s && is-ci || husky install",
-    "prepublishOnly": "npm run build",
-    "release": "standard-version",
-    "release:alpha": "standard-version --prerelease alpha",
-    "test": "jest"
-  },
   "devDependencies": {
     "@buka/eslint-config": "^1.5.0",
     "@commitlint/cli": "^18.4.4",
