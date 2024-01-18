@@ -32,7 +32,7 @@ export class ConfigModule extends ConfigurableModuleClass {
             if (value !== undefined) instance[key] = value
           }
 
-          const value = subConfig[toCamelCase(key)]
+          const value = subConfig && subConfig[toCamelCase(key)]
           if (value !== undefined) instance[key] = value
         }
 
