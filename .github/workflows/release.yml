@@ -24,6 +24,7 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 18
+          registry-url: https://registry.npmjs.org/
         if: ${{ steps.release.outputs.release_created }}
       - run: corepack pnpm install
         if: ${{ steps.release.outputs.release_created }}
