@@ -63,7 +63,7 @@ export class ConfigModule extends ConfigurableModuleClass {
   }
 
   static register(options: typeof OPTIONS_TYPE): DynamicModule {
-    const configProviders = Reflect.getMetadata(CONFIGURATION_OBJECTS_METADATA_KEY, ConfigModule)
+    const configProviders = Reflect.getMetadata(CONFIGURATION_OBJECTS_METADATA_KEY, ConfigModule) || []
     const dynamicModule = super.register(options)
 
     dynamicModule.providers = [
@@ -81,7 +81,7 @@ export class ConfigModule extends ConfigurableModuleClass {
   }
 
   static registerAsync(options: typeof ASYNC_OPTIONS_TYPE): DynamicModule {
-    const configProviders = Reflect.getMetadata(CONFIGURATION_OBJECTS_METADATA_KEY, ConfigModule)
+    const configProviders = Reflect.getMetadata(CONFIGURATION_OBJECTS_METADATA_KEY, ConfigModule) || []
     const dynamicModule = super.registerAsync(options)
 
     dynamicModule.providers = [
