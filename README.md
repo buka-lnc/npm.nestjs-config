@@ -72,6 +72,7 @@ Import `ConfigModule` in your `AppModule`:
 // app.module.ts
 import { Module } from "@nestjs/common";
 import { ConfigModule } from "@buka/nestjs-config";
+import { AppConfig } from './app.config'
 
 @Module({
   // use process.env and read .env by defaulted
@@ -83,8 +84,6 @@ import { ConfigModule } from "@buka/nestjs-config";
 })
 export class AppModule {}
 ```
-
-> `ConfigModule` automatically loads all classes with the `@Configuration` decorator.
 
 Inject and use `AppConfig` in your service:
 
