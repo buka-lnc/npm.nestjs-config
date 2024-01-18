@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.0.4](https://github.com/buka-lnc/npm.nestjs-config/compare/v1.0.3...v1.0.4) (2024-01-18)
+
+
+### Bug Fixes
+
+* unabled publish in actions ([f7fb7b7](https://github.com/buka-lnc/npm.nestjs-config/commit/f7fb7b72c0546ec353e442c7b09ebe3d1049ca5d))
+
 ## [1.0.3](https://github.com/buka-lnc/npm.nestjs-config/compare/v1.0.2...v1.0.3) (2024-01-18)
 
 
