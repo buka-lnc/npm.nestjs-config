@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.1.1](https://github.com/buka-lnc/npm.nestjs-config/compare/v1.1.0...v1.1.1) (2024-01-20)
+
+
+### Bug Fixes
+
+* class-validator and class-transformer should be peer dependencies ([89bd0dd](https://github.com/buka-lnc/npm.nestjs-config/commit/89bd0dd2523d1918e6b4e9674f9a5937ea9d161c))
+* transforme should before validate ([d6a2501](https://github.com/buka-lnc/npm.nestjs-config/commit/d6a2501d8eeb30c8e6817bb9ce5da19d254c5db6))
+
 ## [1.1.0](https://github.com/buka-lnc/npm.nestjs-config/compare/v1.0.5...v1.1.0) (2024-01-20)
 
 
