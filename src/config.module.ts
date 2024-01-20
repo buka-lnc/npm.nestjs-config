@@ -40,14 +40,15 @@ export class ConfigModule extends ConfigurableModuleClass {
           if (value !== undefined) instance[key] = value
         }
 
-        const errors = await validate(instance)
+        const result = instanceToInstance(instance)
+        const errors = await validate(result)
 
         if (errors.length) {
           Logger.error(errors.map((error) => error.toString()).join('\n'))
           throw new Error(errors.map((error) => error.toString()).join('\n'))
         }
 
-        return instanceToInstance(instance)
+        return result
       },
     }
   }
