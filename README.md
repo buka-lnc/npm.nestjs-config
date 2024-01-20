@@ -14,6 +14,7 @@ This is an easy-to-use nestjs config module with many surprising features.
 
 - Config verification by `class-validator`
 - Config transform by `class-transformer`
+- Load configuration files from anywhere
 - Perfect coding tips
 - Automatically handle naming styles
 - Injectable config class
@@ -36,7 +37,8 @@ CACHE_DIR="./tmp"
 BROKERS="test01.test.com,test02.test.com,test03.test.com"
 ```
 
-Then, define a `AppConfig` class with the `@Configuration()` decorator. And add `class-validator` decorators to properties:
+Then, define a `AppConfig` class with the `@Configuration()` decorator. And add decorators
+of `class-validator` to properties:
 
 ```typescript
 // app.config.ts
@@ -72,13 +74,14 @@ Import `ConfigModule` in your `AppModule`:
 // app.module.ts
 import { Module } from "@nestjs/common";
 import { ConfigModule } from "@buka/nestjs-config";
-import { AppConfig } from './app.config'
+import { AppConfig } from "./app.config";
 
 @Module({
   // use process.env and read .env by defaulted
   imports: [
     ConfigModule.register({
       isGlobal: true,
+      providers: [AppConfig],
     }),
   ],
 })
@@ -106,11 +109,13 @@ import {
   processEnvLoader,
   dotenvLoader,
 } from "@buka/nestjs-config";
+import { AppConfig } from "./app.config";
 
 @Module({
   imports: [
     ConfigModule.register({
       isGlobal: true,
+      providers: [AppConfig],
       config: [
         processEnvLoader,
         // transform DATABASE__HOST="0.0.0.0"
@@ -152,12 +157,14 @@ Use `yamlConfigLoader`:
 ```typescript
 import { Module } from "@nestjs/common";
 import { ConfigModule } from "@buka/nestjs-config";
+import { AppConfig } from "./app.config";
 import { yamlConfigLoader } from "./yamlConfigLoader";
 
 @Module({
   imports: [
     ConfigModule.register({
       isGlobal: true,
+      providers: [AppConfig],
       config: [yamlConfigLoader("my-yaml-config.yaml")],
     }),
   ],
@@ -207,12 +214,44 @@ export class MysqlConfig {
 ```typescript
 import { Module } from "@nestjs/common";
 import { ConfigModule } from "@buka/nestjs-config";
+import { AppConfig } from "./app.config";
 
 @Module({
   imports: [
     ConfigModule.register({
       isGlobal: true,
       suppressWarnings: true,
+      providers: [AppConfig],
+    }),
+  ],
+})
+export class AppModule {}
+```
+
+### ConfigModule.inject(ConfigProvider, DynamicModule[, dynamicModuleOptions])
+
+Simplify the writing of `.forRootAsync`/`.registerAsync`.
+
+```typescript
+import { Module } from "@nestjs/common";
+import { ConfigModule } from "@buka/nestjs-config";
+import { KafkaModule, KafkaModuleOptions } from "@buka/nestjs-kafka";
+import { AppConfig } from "./app.config";
+import { KafkaConfig } from "./kafka.config";
+
+@Module({
+  imports: [
+    ConfigModule.register({
+      isGlobal: true,
+      providers: [AppConfig, KafkaConfig],
+    }),
+
+    ConfigModule.inject(KafkaConfig, KafkaModule, { name: "my-kafka" }),
+    // this is equal to
+    KafkaModule.forRootAsync({
+      name: "my-kafka",
+      inject: [KafkaConfig],
+      useFactory: (config: KafkaModuleOptions) => config,
     }),
   ],
 })

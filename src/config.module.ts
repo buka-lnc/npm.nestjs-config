@@ -1,13 +1,17 @@
+/* eslint-disable @typescript-eslint/no-unsafe-return */
 import { DynamicModule, FactoryProvider, Logger, Module } from '@nestjs/common'
 import { instanceToInstance } from 'class-transformer'
 import { validate } from 'class-validator'
 import objectPath from 'object-path'
 import * as R from 'ramda'
+import { Class } from 'type-fest'
 import { dotenvLoader } from './config-loader/dotenv-loader.js'
 import { processEnvLoader } from './config-loader/process-env-loader.js'
 import { ASYNC_OPTIONS_TYPE, ConfigurableModuleClass, MODULE_OPTIONS_TOKEN, OPTIONS_TYPE } from './config.module-definition.js'
 import { CONFIGURATION_OBJECTS_METADATA_KEY, CONFIGURATION_OBJECT_PATH_METADATA_KEY, CONFIG_NAME_METADATA_KEY, MODULE_LOADED_CONFIG_TOKEN } from './constants.js'
+import { AsyncOptions } from './interfaces/async-options.js'
 import { ConfigProvider } from './interfaces/config-provider.interface.js'
+import { AsyncOptionsOfModule, InjectedModule } from './interfaces/injected-module.interface.js'
 import { objectKeysToCamelCase } from './utils/object-keys-to-camel-case.js'
 import { toCamelCase } from './utils/to-camel-case.js'
 
@@ -96,5 +100,30 @@ export class ConfigModule extends ConfigurableModuleClass {
     ]
 
     return dynamicModule
+  }
+
+  static inject<
+    M extends InjectedModule,
+    AO extends AsyncOptionsOfModule<M>,
+    O extends Awaited<ReturnType<AO['useFactory']>>,
+    P extends Class<O>
+  >(provider: P, module: M, moduleAsyncOptions?: Omit<AO, keyof AsyncOptions>): DynamicModule {
+    if ('registerAsync' in module && module.registerAsync) {
+      return module.registerAsync({
+        ...moduleAsyncOptions,
+        inject: [provider],
+        useFactory: (config) => config,
+      })
+    }
+
+    if ('forRootAsync' in module && module.forRootAsync) {
+      return module.forRootAsync({
+        ...moduleAsyncOptions,
+        inject: [provider],
+        useFactory: (config) => config,
+      })
+    }
+
+    throw new TypeError('Invalid module')
   }
 }
