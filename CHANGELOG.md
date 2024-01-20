@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.1.0](https://github.com/buka-lnc/npm.nestjs-config/compare/v1.0.5...v1.1.0) (2024-01-20)
+
+
+### Features
+
+* add ConfigModule.inject(provider, module[, moduleAsyncOptions]) ([71f9ed5](https://github.com/buka-lnc/npm.nestjs-config/commit/71f9ed5ca929c14aa6788e1b16347fb1ef87e351))
+
 ## [1.0.5](https://github.com/buka-lnc/npm.nestjs-config/compare/v1.0.4...v1.0.5) (2024-01-18)
 
 
