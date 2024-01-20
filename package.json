@@ -40,6 +40,8 @@
     "@types/ramda": "^0.29.9",
     "@typescript-eslint/eslint-plugin": "^6.10.0",
     "@typescript-eslint/parser": "^6.10.0",
+    "class-transformer": "^0.5.1",
+    "class-validator": "^0.14.0",
     "eslint": "^8.53.0",
     "husky": "^8.0.3",
     "is-ci": "^3.0.1",
@@ -55,14 +57,14 @@
   "packageManager": "pnpm@8.14.0",
   "dependencies": {
     "change-case-all": "^2.1.0",
-    "class-transformer": "^0.5.1",
-    "class-validator": "^0.14.0",
     "dotenv": "^16.3.1",
     "object-path": "^0.11.8",
     "ramda": "^0.29.1",
     "type-fest": "^4.9.0"
   },
   "peerDependencies": {
-    "@nestjs/common": "^10.3.0"
+    "@nestjs/common": "^10",
+    "class-transformer": "*",
+    "class-validator": "*"
   }
 }
