@@ -16,7 +16,15 @@
     "test": "jest"
   },
   "keywords": [
-    "nestjs nest module config configuration nconf dotenv env environment"
+    "nestjs",
+    "nest",
+    "module",
+    "config",
+    "configuration",
+    "nconf",
+    "dotenv",
+    "env",
+    "environment"
   ],
   "author": "Val.istar.Guo <val.istar.guo@gmail.com>",
   "license": "MIT",
