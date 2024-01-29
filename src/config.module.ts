@@ -108,12 +108,75 @@ export class ConfigModule extends ConfigurableModuleClass {
     AO extends AsyncOptionsOfModule<M>,
     O extends Awaited<ReturnType<AO['useFactory']>>,
     P extends Class<O>
-  >(provider: P, module: M, moduleAsyncOptions?: Omit<AO, keyof AsyncOptions>): DynamicModule {
+  >(
+    provider: P,
+    module: M,
+  ): DynamicModule
+
+  static inject<
+    M extends InjectedModule,
+    AO extends AsyncOptionsOfModule<M>,
+    O extends Awaited<ReturnType<AO['useFactory']>>,
+    P extends Class<any>
+  >(
+    provider: P,
+    module: M,
+    optionsFactory: (config: P['prototype']) => Promise<O> | O,
+  ): DynamicModule
+
+  static inject<
+    M extends InjectedModule,
+    AO extends AsyncOptionsOfModule<M>,
+    O extends Awaited<ReturnType<AO['useFactory']>>,
+    P extends Class<O>
+  >(
+    provider: P,
+    module: M,
+    moduleAsyncOptions: Omit<AO, keyof AsyncOptions>,
+  ): DynamicModule
+
+  static inject<
+    M extends InjectedModule,
+    AO extends AsyncOptionsOfModule<M>,
+    O extends Awaited<ReturnType<AO['useFactory']>>,
+    P extends Class<any>
+  >(
+    provider: P,
+    module: M,
+    moduleAsyncOptions: Omit<AO, keyof AsyncOptions>,
+    optionsFactory: (config: P['prototype']) => Promise<O>,
+  ): DynamicModule
+
+  static inject<
+    M extends InjectedModule,
+    AO extends AsyncOptionsOfModule<M>,
+    O extends Awaited<ReturnType<AO['useFactory']>>,
+    P extends Class<any>
+  >(
+    provider: P,
+    module: M,
+    moduleAsyncOptionsOrFactory?: Omit<AO, keyof AsyncOptions> | ((config: P) => Promise<O> | O),
+    optionsFactory?: (config: P['prototype']) => Promise<O>,
+  ): DynamicModule {
+    let moduleAsyncOptions: Omit<AO, keyof AsyncOptions> | undefined = undefined
+    let useFactory: AsyncOptions['useFactory'] = (config) => config
+
+    if (typeof moduleAsyncOptionsOrFactory === 'function') {
+      useFactory = moduleAsyncOptionsOrFactory as any
+    } else if (typeof moduleAsyncOptionsOrFactory === 'object') {
+      moduleAsyncOptions = moduleAsyncOptionsOrFactory
+    }
+
+    if (typeof optionsFactory === 'function') {
+      useFactory = optionsFactory as any
+    }
+
+
     if ('registerAsync' in module && module.registerAsync) {
       return module.registerAsync({
         ...moduleAsyncOptions,
         inject: [provider],
-        useFactory: (config) => config,
+        useFactory,
       })
     }
 
@@ -121,7 +184,7 @@ export class ConfigModule extends ConfigurableModuleClass {
       return module.forRootAsync({
         ...moduleAsyncOptions,
         inject: [provider],
-        useFactory: (config) => config,
+        useFactory,
       })
     }
 

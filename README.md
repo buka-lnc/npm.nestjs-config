@@ -253,6 +253,25 @@ import { KafkaConfig } from "./kafka.config";
       inject: [KafkaConfig],
       useFactory: (config: KafkaModuleOptions) => config,
     }),
+
+    // Mapping KafkaConfig to options of KafkaModule manually
+    ConfigModule.inject(
+      KafkaConfig,
+      KafkaModule,
+      // override asyncOptions of KafkaModule
+      { name: "my-kafka" },
+      // override options of KafkaModule
+      (config: KafkaConfig) => ({
+        ...config,
+        groupId: `prefix_${config.groupId}`,
+      })
+    ),
+
+    // if you don't need override asyncOptions
+    ConfigModule.inject(KafkaConfig, KafkaModule, (config: KafkaConfig) => ({
+      ...config,
+      groupId: `prefix_${config.groupId}`,
+    })),
   ],
 })
 export class AppModule {}
