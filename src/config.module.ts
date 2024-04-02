@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unsafe-return */
-import { DynamicModule, FactoryProvider, Logger, Module } from '@nestjs/common'
+import { DynamicModule, FactoryProvider, Logger, Module, Type } from '@nestjs/common'
 import { instanceToInstance } from 'class-transformer'
 import { validate } from 'class-validator'
 import objectPath from 'object-path'
@@ -14,41 +14,52 @@ import { ConfigProvider } from './interfaces/config-provider.interface.js'
 import { AsyncOptionsOfModule, InjectedModule } from './interfaces/injected-module.interface.js'
 import { objectKeysToCamelCase } from './utils/object-keys-to-camel-case.js'
 import { toCamelCase } from './utils/to-camel-case.js'
+import { ConfigModuleOptions } from './interfaces/config-module-options.interface.js'
 
 
 @Module({})
 export class ConfigModule extends ConfigurableModuleClass {
+  private static providers = new Map()
+
+  private static async createConfigProvider(config: Record<string, any>, ConfigProviderClass: ConfigProvider): Promise<ConfigProvider> {
+    const path: string = (Reflect.getMetadata(CONFIGURATION_OBJECT_PATH_METADATA_KEY, ConfigProviderClass) || '').toLowerCase()
+
+    const subConfig = objectPath.get(config, path)
+
+    const instance: typeof ConfigProviderClass = new ConfigProviderClass()
+
+    for (const key of Object.getOwnPropertyNames(instance)) {
+      const configName = Reflect.getMetadata(CONFIG_NAME_METADATA_KEY, ConfigProviderClass, key)
+      if (configName) {
+        const value = objectPath.get(config, configName)
+        if (value !== undefined) instance[key] = value
+      }
+
+      const value = subConfig && subConfig[toCamelCase(key)]
+      if (value !== undefined) instance[key] = value
+    }
+
+    const result = instanceToInstance(instance)
+    const errors = await validate(result)
+
+    if (errors.length) {
+      Logger.error(errors.map((error) => error.toString()).join('\n'))
+      throw new Error(errors.map((error) => error.toString()).join('\n'))
+    }
+
+    this.providers.set(ConfigProviderClass, result)
+    return result
+  }
+
   private static createConfigProviderFactory(ConfigProviderClass: ConfigProvider): FactoryProvider {
     return {
       provide: ConfigProviderClass,
       inject: [MODULE_LOADED_CONFIG_TOKEN],
-      useFactory: async (config: Record<string, any>) => {
-        const path: string = (Reflect.getMetadata(CONFIGURATION_OBJECT_PATH_METADATA_KEY, ConfigProviderClass) || '').toLowerCase()
+      useFactory: (config: Record<string, any>) => {
+        const provider = this.providers.get(ConfigProviderClass)
+        if (provider) return provider
 
-        const subConfig = objectPath.get(config, path)
-
-        const instance: typeof ConfigProviderClass = new ConfigProviderClass()
-
-        for (const key of Object.getOwnPropertyNames(instance)) {
-          const configName = Reflect.getMetadata(CONFIG_NAME_METADATA_KEY, ConfigProviderClass, key)
-          if (configName) {
-            const value = objectPath.get(config, configName)
-            if (value !== undefined) instance[key] = value
-          }
-
-          const value = subConfig && subConfig[toCamelCase(key)]
-          if (value !== undefined) instance[key] = value
-        }
-
-        const result = instanceToInstance(instance)
-        const errors = await validate(result)
-
-        if (errors.length) {
-          Logger.error(errors.map((error) => error.toString()).join('\n'))
-          throw new Error(errors.map((error) => error.toString()).join('\n'))
-        }
-
-        return result
+        return this.createConfigProvider(config, ConfigProviderClass)
       },
     }
   }
@@ -65,6 +76,27 @@ export class ConfigModule extends ConfigurableModuleClass {
         return objectKeysToCamelCase(R.mergeAll(configs))
       },
     }
+  }
+
+  /**
+   * Load config and provider before registering the module
+   */
+  static async preload(options: ConfigModuleOptions): Promise<void> {
+    const configLoaders = (options.config || [processEnvLoader(), '.env'])
+      .map((c) => (typeof c === 'string' ? dotenvLoader(c) : c))
+
+    const configs = await Promise.all(configLoaders.map((loader) => loader(options)))
+    const config = objectKeysToCamelCase(R.mergeAll(configs))
+
+    const configProviders: Type<any>[] = Reflect.getMetadata(CONFIGURATION_OBJECTS_METADATA_KEY, ConfigModule) || []
+    await Promise.all(configProviders.map((provider) => this.createConfigProvider(config, provider)))
+  }
+
+  /**
+   * Get the loaded config
+   */
+  static get<T extends ConfigProvider>(ConfigProviderClass: T): Promise<T | undefined> {
+    return this.providers.get(ConfigProviderClass)
   }
 
   static register(options: typeof OPTIONS_TYPE): DynamicModule {
