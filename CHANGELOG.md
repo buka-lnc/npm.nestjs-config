@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.4.0](https://github.com/buka-lnc/npm.nestjs-config/compare/v1.3.0...v1.4.0) (2024-04-02)
+
+
+### Features
+
+* dotenvLoader auto parse json value ([578c010](https://github.com/buka-lnc/npm.nestjs-config/commit/578c0105952eb2a23a8aa4212608ae0003cf80da))
+
 ## [1.3.0](https://github.com/buka-lnc/npm.nestjs-config/compare/v1.2.0...v1.3.0) (2024-04-02)
 
 
