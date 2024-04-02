@@ -22,7 +22,15 @@ export function dotenvLoader(filepath: string, separator = '__'): ConfigLoader {
     let result = {}
 
     for (const key of Object.keys(config)) {
-      result = R.assocPath(key.split(separator), config[key], result)
+      let value = config[key]
+      if (typeof value === 'string') {
+        try {
+          value = JSON.parse(value)
+        } catch (e) {
+        // ignore
+        }
+      }
+      result = R.assocPath(key.split(separator), value, result)
     }
 
     return result
