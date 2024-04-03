@@ -120,7 +120,9 @@ import { AppConfig } from "./app.config";
         processEnvLoader,
         // transform DATABASE__HOST="0.0.0.0"
         // to DATABASE = { HOST: "0.0.0.0" }
-        dotenvLoader(".env", "__"),
+        // transform LOG="true"
+        // to LOG = true
+        dotenvLoader(".env", { separator: "__", jsonParse: true }),
         dotenvLoader(`.${process.NODE_ENV}.env`),
       ],
     }),
