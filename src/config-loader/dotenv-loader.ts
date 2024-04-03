@@ -31,7 +31,7 @@ export function dotenvLoader(filepath: string, options: DotenvLoaderOptions): Co
 
     for (const key of Object.keys(config)) {
       let value = config[key]
-      if (typeof value === 'string') {
+      if (jsonParse && typeof value === 'string') {
         try {
           value = JSON.parse(value)
         } catch (e) {
