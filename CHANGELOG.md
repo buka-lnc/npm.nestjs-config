@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.5.1](https://github.com/buka-lnc/npm.nestjs-config/compare/v1.5.0...v1.5.1) (2024-04-03)
+
+
+### Bug Fixes
+
+* dotenv-loader options cannot control jsonParse ([8a28ae0](https://github.com/buka-lnc/npm.nestjs-config/commit/8a28ae052f21bb4915e7d42269ef59f72ec83deb))
+
 ## [1.5.0](https://github.com/buka-lnc/npm.nestjs-config/compare/v1.4.0...v1.5.0) (2024-04-03)
 
 
