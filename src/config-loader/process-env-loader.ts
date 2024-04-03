@@ -1,12 +1,37 @@
 import * as R from 'ramda'
 import { ConfigLoader } from '../interfaces/config-loader.interface.js'
 
-export function processEnvLoader(separator = '__'): ConfigLoader {
+
+interface ProcessEnvLoaderOptions {
+  /**
+   * @default '__'
+   */
+  separator?: string
+
+  /**
+   * @default true
+   */
+  jsonParse?: boolean
+}
+
+export function processEnvLoader(options: ProcessEnvLoaderOptions): ConfigLoader {
+  const separator = options.separator || '__'
+  const jsonParse = options.jsonParse || true
+
   return () => {
     let config = {}
 
     for (const key of Object.keys(process.env)) {
-      config = R.assocPath(key.split(separator), process.env[key], config)
+      let value = process.env[key]
+      if (jsonParse && typeof value === 'string') {
+        try {
+          value = JSON.parse(value)
+        } catch (e) {
+        // ignore
+        }
+      }
+
+      config = R.assocPath(key.split(separator), value, config)
     }
 
     return config

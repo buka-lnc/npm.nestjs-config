@@ -7,7 +7,15 @@ import { ConfigLoader } from '../interfaces/config-loader.interface.js'
 import { ConfigModuleOptions } from '../interfaces/config-module-options.interface.js'
 
 
-export function dotenvLoader(filepath: string, separator = '__'): ConfigLoader {
+interface DotenvLoaderOptions {
+  separator?: string
+  jsonParse?: boolean
+}
+
+export function dotenvLoader(filepath: string, options: DotenvLoaderOptions): ConfigLoader {
+  const separator = options.separator || '__'
+  const jsonParse = options.jsonParse || true
+
   return async (options: ConfigModuleOptions) => {
     if (!existsSync(filepath)) {
       if (!options.suppressWarnings) {
