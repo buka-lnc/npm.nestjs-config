@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.5.0](https://github.com/buka-lnc/npm.nestjs-config/compare/v1.4.0...v1.5.0) (2024-04-03)
+
+
+### Features
+
+* process.env support jsonParse ([9e666ae](https://github.com/buka-lnc/npm.nestjs-config/commit/9e666ae94fdb73b84baeb5eac9df3e192a9f96f7))
+
 ## [1.4.0](https://github.com/buka-lnc/npm.nestjs-config/compare/v1.3.0...v1.4.0) (2024-04-02)
 
 
