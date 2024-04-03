@@ -12,7 +12,7 @@ interface DotenvLoaderOptions {
   jsonParse?: boolean
 }
 
-export function dotenvLoader(filepath: string, options: DotenvLoaderOptions): ConfigLoader {
+export function dotenvLoader(filepath: string, options: DotenvLoaderOptions = {}): ConfigLoader {
   const separator = options.separator || '__'
   const jsonParse = options.jsonParse || true
 

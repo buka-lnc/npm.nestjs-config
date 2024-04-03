@@ -14,7 +14,7 @@ interface ProcessEnvLoaderOptions {
   jsonParse?: boolean
 }
 
-export function processEnvLoader(options: ProcessEnvLoaderOptions): ConfigLoader {
+export function processEnvLoader(options: ProcessEnvLoaderOptions = {}): ConfigLoader {
   const separator = options.separator || '__'
   const jsonParse = options.jsonParse || true
 
