@@ -95,7 +95,7 @@ export class ConfigModule extends ConfigurableModuleClass {
   /**
    * Get the loaded config
    */
-  static get<T extends ConfigProvider>(ConfigProviderClass: T): Promise<T | undefined> {
+  static get<T extends ConfigProvider>(ConfigProviderClass: T): Promise<InstanceType<T> | undefined> {
     return this.providers.get(ConfigProviderClass)
   }
 
