@@ -123,7 +123,7 @@ import { AppConfig } from "./app.config";
         // transform LOG="true"
         // to LOG = true
         dotenvLoader(".env", { separator: "__", jsonParse: true }),
-        dotenvLoader(`.${process.NODE_ENV}.env`),
+        dotenvLoader(`.${process.env.NODE_ENV}.env`),
       ],
     }),
   ],

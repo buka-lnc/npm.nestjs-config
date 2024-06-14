@@ -3,7 +3,6 @@ import { DynamicModule, FactoryProvider, Logger, Module, Type } from '@nestjs/co
 import { instanceToInstance } from 'class-transformer'
 import { validate } from 'class-validator'
 import objectPath from 'object-path'
-import * as R from 'ramda'
 import { Class } from 'type-fest'
 import { dotenvLoader } from './config-loader/dotenv-loader.js'
 import { processEnvLoader } from './config-loader/process-env-loader.js'
@@ -15,6 +14,7 @@ import { AsyncOptionsOfModule, InjectedModule } from './interfaces/injected-modu
 import { objectKeysToCamelCase } from './utils/object-keys-to-camel-case.js'
 import { toCamelCase } from './utils/to-camel-case.js'
 import { ConfigModuleOptions } from './interfaces/config-module-options.interface.js'
+import { deepMergeAll } from './utils/deep-merge-all.js'
 
 
 @Module({})
@@ -25,7 +25,6 @@ export class ConfigModule extends ConfigurableModuleClass {
     const path: string = (Reflect.getMetadata(CONFIGURATION_OBJECT_PATH_METADATA_KEY, ConfigProviderClass) || '').toLowerCase()
 
     const subConfig = objectPath.get(config, path)
-
     const instance: typeof ConfigProviderClass = new ConfigProviderClass()
 
     for (const key of Object.getOwnPropertyNames(instance)) {
@@ -43,8 +42,22 @@ export class ConfigModule extends ConfigurableModuleClass {
     const errors = await validate(result)
 
     if (errors.length) {
-      Logger.error(errors.map((error) => error.toString()).join('\n'))
-      throw new Error(errors.map((error) => error.toString()).join('\n'))
+      const message = errors
+        .map((error) => {
+          let message = 'An instance of LoggerConfig has failed the validation:\n'
+          for (const constraint in error.constraints) {
+            message += `  - Property: \`${error.property}\`\n`
+            message += `    Value: ${JSON.stringify(error.value)}\n`
+            message += `    Constraint: ${constraint}\n`
+            message += `    Expect: ${error.constraints[constraint]}\n`
+          }
+
+          return message
+        })
+        .join('\n')
+
+      Logger.error(message)
+      throw new Error(message)
     }
 
     this.providers.set(ConfigProviderClass, result)
@@ -73,7 +86,7 @@ export class ConfigModule extends ConfigurableModuleClass {
           .map((c) => (typeof c === 'string' ? dotenvLoader(c) : c))
 
         const configs = await Promise.all(configLoaders.map((loader) => loader(options)))
-        return objectKeysToCamelCase(R.mergeAll(configs))
+        return objectKeysToCamelCase(deepMergeAll(configs))
       },
     }
   }
@@ -86,7 +99,7 @@ export class ConfigModule extends ConfigurableModuleClass {
       .map((c) => (typeof c === 'string' ? dotenvLoader(c) : c))
 
     const configs = await Promise.all(configLoaders.map((loader) => loader(options)))
-    const config = objectKeysToCamelCase(R.mergeAll(configs))
+    const config = objectKeysToCamelCase(deepMergeAll(configs))
 
     const configProviders: Type<any>[] = Reflect.getMetadata(CONFIGURATION_OBJECTS_METADATA_KEY, ConfigModule) || []
     await Promise.all(configProviders.map((provider) => this.createConfigProvider(config, provider)))
