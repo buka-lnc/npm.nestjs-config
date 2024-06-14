@@ -7,7 +7,7 @@ import { Class } from 'type-fest'
 import { dotenvLoader } from './config-loader/dotenv-loader.js'
 import { processEnvLoader } from './config-loader/process-env-loader.js'
 import { ASYNC_OPTIONS_TYPE, ConfigurableModuleClass, MODULE_OPTIONS_TOKEN, OPTIONS_TYPE } from './config.module-definition.js'
-import { CONFIGURATION_OBJECTS_METADATA_KEY, CONFIGURATION_OBJECT_PATH_METADATA_KEY, CONFIG_NAME_METADATA_KEY, MODULE_LOADED_CONFIG_TOKEN } from './constants.js'
+import { CONFIGURATION_OBJECTS_METADATA_KEY, CONFIGURATION_OBJECT_PATH_METADATA_KEY, CONFIG_NAME_METADATA_KEY, MODULE_LOADED_CONFIG_TOKEN, RESET_COLOR } from './constants.js'
 import { AsyncOptions } from './interfaces/async-options.js'
 import { ConfigProvider } from './interfaces/config-provider.interface.js'
 import { AsyncOptionsOfModule, InjectedModule } from './interfaces/injected-module.interface.js'
@@ -66,11 +66,10 @@ export class ConfigModule extends ConfigurableModuleClass {
       throw new Error(message)
     }
 
-    const ResetColor = '\x1b[0m'
 
     if (options.debug) {
       // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-      Logger.debug(`${ConfigProviderClass.name} initialized${ResetColor}\n${inspect(result, false, null, true)}`, '@buka/nestjs-config')
+      Logger.debug(`${ConfigProviderClass.name} initialized${RESET_COLOR}\n${inspect(result, false, null, true)}`, '@buka/nestjs-config')
     }
 
     this.providers.set(ConfigProviderClass, result)
