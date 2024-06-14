@@ -15,13 +15,19 @@ import { objectKeysToCamelCase } from './utils/object-keys-to-camel-case.js'
 import { toCamelCase } from './utils/to-camel-case.js'
 import { ConfigModuleOptions } from './interfaces/config-module-options.interface.js'
 import { deepMergeAll } from './utils/deep-merge-all.js'
+import { inspect } from 'util'
 
 
 @Module({})
 export class ConfigModule extends ConfigurableModuleClass {
+  private static config: object | null = null
   private static providers = new Map()
 
-  private static async createConfigProvider(config: Record<string, any>, ConfigProviderClass: ConfigProvider): Promise<ConfigProvider> {
+  private static async createConfigProvider(options: typeof OPTIONS_TYPE, config: Record<string, any>, ConfigProviderClass: ConfigProvider): Promise<ConfigProvider> {
+    if (this.providers.has(ConfigProviderClass)) {
+      return this.providers.get(ConfigProviderClass)
+    }
+
     const path: string = (Reflect.getMetadata(CONFIGURATION_OBJECT_PATH_METADATA_KEY, ConfigProviderClass) || '').toLowerCase()
 
     const subConfig = objectPath.get(config, path)
@@ -60,19 +66,38 @@ export class ConfigModule extends ConfigurableModuleClass {
       throw new Error(message)
     }
 
+    const ResetColor = '\x1b[0m'
+
+    if (options.debug) {
+      // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+      Logger.debug(`${ConfigProviderClass.name} initialized${ResetColor}\n${inspect(result, false, null, true)}`, '@buka/nestjs-config')
+    }
+
     this.providers.set(ConfigProviderClass, result)
     return result
+  }
+
+  private static async loadConfig(options: typeof OPTIONS_TYPE): Promise<object> {
+    if (this.config !== null) return this.config
+
+    const configLoaders = (options.loaders || [processEnvLoader(), '.env'])
+      .map((c) => (typeof c === 'string' ? dotenvLoader(c) : c))
+
+    const configs = await Promise.all(configLoaders.map((loader) => loader(options)))
+    const config = objectKeysToCamelCase(deepMergeAll(configs))
+    this.config = config
+    return config
   }
 
   private static createConfigProviderFactory(ConfigProviderClass: ConfigProvider): FactoryProvider {
     return {
       provide: ConfigProviderClass,
-      inject: [MODULE_LOADED_CONFIG_TOKEN],
-      useFactory: (config: Record<string, any>) => {
+      inject: [MODULE_OPTIONS_TOKEN, MODULE_LOADED_CONFIG_TOKEN],
+      useFactory: (options: typeof OPTIONS_TYPE, config: Record<string, any>) => {
         const provider = this.providers.get(ConfigProviderClass)
         if (provider) return provider
 
-        return this.createConfigProvider(config, ConfigProviderClass)
+        return this.createConfigProvider(options, config, ConfigProviderClass)
       },
     }
   }
@@ -81,13 +106,7 @@ export class ConfigModule extends ConfigurableModuleClass {
     return {
       provide: MODULE_LOADED_CONFIG_TOKEN,
       inject: [MODULE_OPTIONS_TOKEN],
-      useFactory: async (options: typeof OPTIONS_TYPE) => {
-        const configLoaders = (options.loaders || [processEnvLoader(), '.env'])
-          .map((c) => (typeof c === 'string' ? dotenvLoader(c) : c))
-
-        const configs = await Promise.all(configLoaders.map((loader) => loader(options)))
-        return objectKeysToCamelCase(deepMergeAll(configs))
-      },
+      useFactory: async (options: typeof OPTIONS_TYPE) => this.loadConfig(options),
     }
   }
 
@@ -95,14 +114,9 @@ export class ConfigModule extends ConfigurableModuleClass {
    * Load config and provider before registering the module
    */
   static async preload(options: ConfigModuleOptions): Promise<void> {
-    const configLoaders = (options.loaders || [processEnvLoader(), '.env'])
-      .map((c) => (typeof c === 'string' ? dotenvLoader(c) : c))
-
-    const configs = await Promise.all(configLoaders.map((loader) => loader(options)))
-    const config = objectKeysToCamelCase(deepMergeAll(configs))
-
+    const config = await this.loadConfig(options)
     const configProviders: Type<any>[] = Reflect.getMetadata(CONFIGURATION_OBJECTS_METADATA_KEY, ConfigModule) || []
-    await Promise.all(configProviders.map((provider) => this.createConfigProvider(config, provider)))
+    await Promise.all(configProviders.map((provider) => this.createConfigProvider(options, config, provider)))
   }
 
   /**

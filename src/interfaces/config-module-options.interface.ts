@@ -15,4 +15,6 @@ export interface ConfigModuleOptions {
   providers: Type[]
 
   suppressWarnings?: true
+
+  debug?: true
 }
