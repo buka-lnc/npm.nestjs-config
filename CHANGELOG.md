@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.1.0](https://github.com/buka-lnc/npm.nestjs-config/compare/v2.0.0...v2.1.0) (2024-06-14)
+
+
+### Features
+
+* add composeLoader function and beautify error log ([6147ccd](https://github.com/buka-lnc/npm.nestjs-config/commit/6147ccd679c5bdd2f7022e2a99f3a45a08491385))
+* add StaticConfig decorator ([de0bdbf](https://github.com/buka-lnc/npm.nestjs-config/commit/de0bdbf5a3d8e71483fd82d2726406fbb7ab7c9c))
+* cache config/provider and add debug log ([21613c2](https://github.com/buka-lnc/npm.nestjs-config/commit/21613c2796859bc67b41e37c34a6dfd3ef5660a3))
+
 ## [2.0.0](https://github.com/buka-lnc/npm.nestjs-config/compare/v1.5.3...v2.0.0) (2024-06-14)
 
 
