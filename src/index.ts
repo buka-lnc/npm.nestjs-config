@@ -3,6 +3,7 @@ export type { ConfigModuleOptions } from './interfaces/config-module-options.int
 
 export { ConfigName } from './decorators/config-name.decorator.js'
 export { Configuration } from './decorators/configuration.decorator.js'
+export { StaticConfig } from './decorators/static-config.decorator.js'
 
 export { composeLoader } from './utils/compose-loader.js'
 export { dotenvLoader } from './config-loader/dotenv-loader.js'
