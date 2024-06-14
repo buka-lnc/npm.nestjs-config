@@ -69,7 +69,7 @@ export class ConfigModule extends ConfigurableModuleClass {
       provide: MODULE_LOADED_CONFIG_TOKEN,
       inject: [MODULE_OPTIONS_TOKEN],
       useFactory: async (options: typeof OPTIONS_TYPE) => {
-        const configLoaders = (options.config || [processEnvLoader(), '.env'])
+        const configLoaders = (options.loaders || [processEnvLoader(), '.env'])
           .map((c) => (typeof c === 'string' ? dotenvLoader(c) : c))
 
         const configs = await Promise.all(configLoaders.map((loader) => loader(options)))
@@ -82,7 +82,7 @@ export class ConfigModule extends ConfigurableModuleClass {
    * Load config and provider before registering the module
    */
   static async preload(options: ConfigModuleOptions): Promise<void> {
-    const configLoaders = (options.config || [processEnvLoader(), '.env'])
+    const configLoaders = (options.loaders || [processEnvLoader(), '.env'])
       .map((c) => (typeof c === 'string' ? dotenvLoader(c) : c))
 
     const configs = await Promise.all(configLoaders.map((loader) => loader(options)))

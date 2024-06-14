@@ -10,7 +10,7 @@ export interface ConfigModuleOptions {
   /**
    * @default ".env"
    */
-  config?: (string | ConfigLoader)[]
+  loaders?: (string | ConfigLoader)[]
 
   providers: Type[]
 

@@ -116,7 +116,7 @@ import { AppConfig } from "./app.config";
     ConfigModule.register({
       isGlobal: true,
       providers: [AppConfig],
-      config: [
+      loaders: [
         processEnvLoader,
         // transform DATABASE__HOST="0.0.0.0"
         // to DATABASE = { HOST: "0.0.0.0" }
@@ -167,7 +167,7 @@ import { yamlConfigLoader } from "./yamlConfigLoader";
     ConfigModule.register({
       isGlobal: true,
       providers: [AppConfig],
-      config: [yamlConfigLoader("my-yaml-config.yaml")],
+      loaders: [yamlConfigLoader("my-yaml-config.yaml")],
     }),
   ],
 })
