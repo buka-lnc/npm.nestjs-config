@@ -2,6 +2,23 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.0.0](https://github.com/buka-lnc/npm.nestjs-config/compare/v1.5.3...v2.0.0) (2024-06-14)
+
+
+### ⚠ BREAKING CHANGES
+
+* `config` option is deprecated, use `loaders` to instead
+
+### Bug Fixes
+
+* avoid conflicts caused by useless ts definitions ([c3d6b98](https://github.com/buka-lnc/npm.nestjs-config/commit/c3d6b98bf4f3fc6d7f1308f99d40dffa3113e293))
+* compatible with useFacotry without Promise ([472013e](https://github.com/buka-lnc/npm.nestjs-config/commit/472013ec320ae7166584be58515a9b5f0068a23c))
+
+
+### Code Refactoring
+
+* rename config =&gt; loaders ([033987c](https://github.com/buka-lnc/npm.nestjs-config/commit/033987cde36f3fa7b5710592c45a80b04efbf56b))
+
 ## [1.5.3](https://github.com/buka-lnc/npm.nestjs-config/compare/v1.5.2...v1.5.3) (2024-04-15)
 
 
