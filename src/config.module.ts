@@ -28,7 +28,7 @@ export class ConfigModule extends ConfigurableModuleClass {
       return this.providers.get(ConfigProviderClass)
     }
 
-    const path: string = (Reflect.getMetadata(CONFIGURATION_OBJECT_PATH_METADATA_KEY, ConfigProviderClass) || '').toLowerCase()
+    const path: string = toCamelCase(Reflect.getMetadata(CONFIGURATION_OBJECT_PATH_METADATA_KEY, ConfigProviderClass) || '')
 
     const subConfig = objectPath.get(config, path)
     const instance: typeof ConfigProviderClass = new ConfigProviderClass()
