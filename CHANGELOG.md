@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.1.2](https://github.com/buka-lnc/npm.nestjs-config/compare/v2.1.1...v2.1.2) (2024-08-26)
+
+
+### Performance Improvements
+
+* display the correct class name in the error message ([d7d8392](https://github.com/buka-lnc/npm.nestjs-config/commit/d7d839253fcb0f7dfeb58364f617370c2acee0de)), closes [#19](https://github.com/buka-lnc/npm.nestjs-config/issues/19)
+
 ## [2.1.1](https://github.com/buka-lnc/npm.nestjs-config/compare/v2.1.0...v2.1.1) (2024-06-16)
 
 
