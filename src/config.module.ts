@@ -50,7 +50,7 @@ export class ConfigModule extends ConfigurableModuleClass {
     if (errors.length) {
       const message = errors
         .map((error) => {
-          let message = 'An instance of LoggerConfig has failed the validation:\n'
+          let message = `An instance of ${ConfigProviderClass.name} has failed the validation:\n`
           for (const constraint in error.constraints) {
             message += `  - Property: \`${error.property}\`\n`
             message += `    Value: ${JSON.stringify(error.value)}\n`
