@@ -2,10 +2,14 @@
   "name": "@buka/nestjs-config",
   "version": "2.1.2",
   "description": "An easy to use nestjs config module",
+  "packageManager": "pnpm@9.10.0",
   "main": "dist/umd/src/index.js",
   "module": "dist/esm/src/index.js",
   "types": "dist/esm/src/index.d.ts",
-  "packageManager": "pnpm@9.5.0",
+  "exports": {
+    "require": "./dist/umd/src/index.js",
+    "import": "./dist/esm/src/index.js"
+  },
   "scripts": {
     "build": "npm run clean && ./build/build.sh",
     "clean": "rm -rf ./dist/*",

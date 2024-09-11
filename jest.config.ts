@@ -4,6 +4,10 @@ import { compilerOptions } from './tsconfig.json'
 
 const jestConfig: JestConfigWithTsJest = {
   preset: 'ts-jest',
+  testMatch: [
+    '<rootDir>/__tests__/**/*.spec.ts',
+    '<rootDir>/src/**/*.spec.ts',
+  ],
   testEnvironment: 'node',
   collectCoverage: true,
   collectCoverageFrom: ['./src/**'],
@@ -11,7 +15,7 @@ const jestConfig: JestConfigWithTsJest = {
   coveragePathIgnorePatterns: [
     '.*__snapshots__/.*',
   ],
-  setupFilesAfterEnv: ['<rootDir>/test/setup.ts'],
+  setupFilesAfterEnv: ['<rootDir>/__tests__/setup.ts'],
   moduleNameMapper: {
     '^(\\.{1,2}/.*)\\.js$': '$1',
     ...pathsToModuleNameMapper(compilerOptions.paths),
@@ -19,4 +23,3 @@ const jestConfig: JestConfigWithTsJest = {
 }
 
 export default jestConfig
-
