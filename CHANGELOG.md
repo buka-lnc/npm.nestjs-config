@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.1.3](https://github.com/buka-lnc/npm.nestjs-config/compare/v2.1.2...v2.1.3) (2024-09-11)
+
+
+### Bug Fixes
+
+* cannot import esm ([2d604fd](https://github.com/buka-lnc/npm.nestjs-config/commit/2d604fd75a634624ae76db35747f03c9a35252f8))
+
 ## [2.1.2](https://github.com/buka-lnc/npm.nestjs-config/compare/v2.1.1...v2.1.2) (2024-08-26)
 
 
