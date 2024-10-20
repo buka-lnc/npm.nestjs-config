@@ -4,7 +4,9 @@
 /coverage
 /doc
 /src
-/test
+
+/__tests__
+/__mocks__
 
 .commitlintrc.yml
 .eslintrc.cjs
