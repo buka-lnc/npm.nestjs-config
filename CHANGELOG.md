@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.1.4](https://github.com/buka-lnc/npm.nestjs-config/compare/v2.1.3...v2.1.4) (2024-10-20)
+
+
+### Bug Fixes
+
+* cannot import package ([f80ffe3](https://github.com/buka-lnc/npm.nestjs-config/commit/f80ffe329684d4c319191d6359bf3ce717c71aa9))
+
 ## [2.1.3](https://github.com/buka-lnc/npm.nestjs-config/compare/v2.1.2...v2.1.3) (2024-09-11)
 
 
