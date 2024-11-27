@@ -14,21 +14,26 @@ jobs:
   release:
     runs-on: ubuntu-latest
     steps:
+      - id: app-token
+        uses: actions/create-github-app-token@v1
+        with:
+          app-id: ${{ vars.BOT_APP_ID }}
+          private-key: ${{ secrets.BOT_PRIVATE_KEY }}
       - uses: GoogleCloudPlatform/release-please-action@v4
         id: release
         with:
-          token: ${{secrets.GITHUB_TOKEN}}
+          token: ${{ steps.app-token.outputs.token }}
           release-type: node
-      - uses: actions/checkout@v4
-        if: ${{ steps.release.outputs.release_created }}
-      - uses: actions/setup-node@v3
+      - if: ${{ steps.release.outputs.release_created }}
+        uses: actions/checkout@v4
+      - if: ${{ steps.release.outputs.release_created }}
+        uses: actions/setup-node@v3
         with:
-          node-version: 18
+          node-version-file: ".node-version"
           registry-url: https://registry.npmjs.org/
-        if: ${{ steps.release.outputs.release_created }}
-      - run: corepack pnpm install
-        if: ${{ steps.release.outputs.release_created }}
-      - run: npm publish --provenance
+      - if: ${{ steps.release.outputs.release_created }}
+        run: corepack pnpm install
+      - if: ${{ steps.release.outputs.release_created }}
+        run: npm publish --provenance
         env:
-          NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
-        if: ${{ steps.release.outputs.release_created }}
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
