@@ -11,9 +11,9 @@ afterEach(() => {
 test('dotenvLoader', async () => {
   const warn = jest.spyOn(Logger, 'warn')
 
-  await fs.writeFile('.env', 'TEST=test')
+  await fs.writeFile('/.env', 'TEST=test')
 
-  const testConfig = await dotenvLoader('.env')({ suppressWarnings: true, providers: [] })
+  const testConfig = await dotenvLoader('/.env')({ suppressWarnings: true, providers: [] })
   expect(testConfig).toEqual({ TEST: 'test' })
 
   const unknownConfig = await dotenvLoader('unknown.env')({ providers: [] })

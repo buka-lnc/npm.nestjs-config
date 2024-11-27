@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { CONFIG_NAME_METADATA_KEY } from '~/constants.js'
 
 

@@ -16,10 +16,8 @@ const jestConfig: JestConfigWithTsJest = {
     '.*__snapshots__/.*',
   ],
   setupFilesAfterEnv: ['<rootDir>/__tests__/setup.ts'],
-  moduleNameMapper: {
-    '^(\\.{1,2}/.*)\\.js$': '$1',
-    ...pathsToModuleNameMapper(compilerOptions.paths),
-  },
+  moduleNameMapper: pathsToModuleNameMapper(compilerOptions.paths),
+  resolver: 'ts-jest-resolver',
 }
 
 export default jestConfig

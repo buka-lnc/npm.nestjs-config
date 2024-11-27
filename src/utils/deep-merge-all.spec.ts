@@ -7,6 +7,6 @@ test('deepMergeAll', () => {
       { a: { b: { c: 1 } } },
       { a: { b: { d: 2 } } },
 
-    ])
+    ]),
   ).toEqual({ a: { b: { c: 1, d: 2 } } })
 })

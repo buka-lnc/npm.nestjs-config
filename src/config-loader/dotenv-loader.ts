@@ -1,10 +1,10 @@
 import { Logger } from '@nestjs/common'
 import dotenv from 'dotenv'
-import { existsSync } from 'fs'
 import { readFile } from 'fs/promises'
 import * as R from 'ramda'
 import { ConfigLoader } from '../interfaces/config-loader.interface.js'
 import { ConfigModuleOptions } from '../interfaces/config-module-options.interface.js'
+import { fsExist } from '../utils/fs-exists.js'
 
 
 interface DotenvLoaderOptions {
@@ -17,7 +17,7 @@ export function dotenvLoader(filepath: string, options: DotenvLoaderOptions = {}
   const jsonParse = options.jsonParse || true
 
   return async (options: ConfigModuleOptions) => {
-    if (!existsSync(filepath)) {
+    if (!await fsExist(filepath)) {
       if (!options.suppressWarnings) {
         Logger.warn(`env file not found: ${filepath}`)
       }

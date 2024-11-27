@@ -1,3 +1,4 @@
-import { fs } from 'memfs'
+/* eslint-disable @typescript-eslint/no-require-imports */
+const { Volume } = require('memfs')
+module.exports = Volume.fromJSON({}).promises
 
-export default fs.promises

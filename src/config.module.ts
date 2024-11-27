@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-unsafe-return */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { DynamicModule, FactoryProvider, Logger, Module, Type } from '@nestjs/common'
 import { instanceToInstance } from 'class-transformer'
 import { validate } from 'class-validator'
@@ -68,7 +68,6 @@ export class ConfigModule extends ConfigurableModuleClass {
 
 
     if (options.debug) {
-      // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
       Logger.debug(`${ConfigProviderClass.name} initialized${RESET_COLOR}\n${inspect(result, false, null, true)}`, '@buka/nestjs-config')
     }
 
@@ -165,7 +164,7 @@ export class ConfigModule extends ConfigurableModuleClass {
     M extends InjectedModule,
     AO extends AsyncOptionsOfModule<M>,
     O extends Awaited<ReturnType<AO['useFactory']>>,
-    P extends Class<O>
+    P extends Class<O>,
   >(
     provider: P,
     module: M,
@@ -175,7 +174,7 @@ export class ConfigModule extends ConfigurableModuleClass {
     M extends InjectedModule,
     AO extends AsyncOptionsOfModule<M>,
     O extends Awaited<ReturnType<AO['useFactory']>>,
-    P extends Class<any>
+    P extends Class<any>,
   >(
     provider: P,
     module: M,
@@ -186,7 +185,7 @@ export class ConfigModule extends ConfigurableModuleClass {
     M extends InjectedModule,
     AO extends AsyncOptionsOfModule<M>,
     O extends Awaited<ReturnType<AO['useFactory']>>,
-    P extends Class<O>
+    P extends Class<O>,
   >(
     provider: P,
     module: M,
@@ -197,7 +196,7 @@ export class ConfigModule extends ConfigurableModuleClass {
     M extends InjectedModule,
     AO extends AsyncOptionsOfModule<M>,
     O extends Awaited<ReturnType<AO['useFactory']>>,
-    P extends Class<any>
+    P extends Class<any>,
   >(
     provider: P,
     module: M,
@@ -209,7 +208,7 @@ export class ConfigModule extends ConfigurableModuleClass {
     M extends InjectedModule,
     AO extends AsyncOptionsOfModule<M>,
     O extends Awaited<ReturnType<AO['useFactory']>>,
-    P extends Class<any>
+    P extends Class<any>,
   >(
     provider: P,
     module: M,

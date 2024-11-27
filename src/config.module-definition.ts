@@ -4,6 +4,6 @@ import { ConfigModuleOptions } from './interfaces/config-module-options.interfac
 export const { ConfigurableModuleClass, MODULE_OPTIONS_TOKEN, OPTIONS_TYPE, ASYNC_OPTIONS_TYPE } = new ConfigurableModuleBuilder<ConfigModuleOptions>()
   .setExtras(
     { isGlobal: true },
-    (definition, extras) => ({ ...definition, global: extras.isGlobal })
+    (definition, extras) => ({ ...definition, global: extras.isGlobal }),
   )
   .build()
