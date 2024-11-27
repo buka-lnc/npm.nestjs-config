@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.1.5](https://github.com/buka-inc/npm.nestjs-config/compare/v2.1.4...v2.1.5) (2024-11-27)
+
+
+### Performance Improvements
+
+* upgrade dependens and use fs.access replace existsSync ([15cec8f](https://github.com/buka-inc/npm.nestjs-config/commit/15cec8fdaef5c49914eb19036715e5519c58e5be))
+
 ## [2.1.4](https://github.com/buka-lnc/npm.nestjs-config/compare/v2.1.3...v2.1.4) (2024-10-20)
 
 
