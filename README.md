@@ -177,7 +177,7 @@ export class AppModule {}
 ### Add prefix to all class properties
 
 ```typescript
-// app.config.ts
+// mysql.config.ts
 import { Configuration } from "@buka/nestjs-config";
 import { IsString } from "class-validator";
 
@@ -278,3 +278,38 @@ import { KafkaConfig } from "./kafka.config";
 })
 export class AppModule {}
 ```
+
+### Preload Config
+
+Sometimes, we have to get config outside the nestjs lifecycle. `ConfigModule.preload(options)` is designed for this.
+
+There is an example of [MikroORM](https://mikro-orm.io/) config file:
+
+```typescript
+// mikro-orm.config.ts
+import { ConfigModule } from "@buka/nestjs-config";
+import { MySqlDriver, defineConfig } from "@mikro-orm/mysql";
+import { MysqlConfig } from "./config/mysql.config";
+import { Migrator } from "@mikro-orm/migrations";
+import { BadRequestException } from "@nestjs/common";
+
+export default (async function loadConfig() {
+  // Load MysqlConfig
+  await ConfigModule.preload({
+    providers: [MysqlConfig],
+  });
+
+  // Get MysqlConfig Instance
+  const config = await ConfigModule.get(MysqlConfig);
+
+  return defineConfig({
+    ...config,
+    entities: ["dist/**/*.entity.js"],
+    driver: MySqlDriver,
+  });
+})();
+```
+
+> [!TIP]
+>
+> The `options` of `ConfigModule.preload(options)` is the `options` of `ConfigModule.register(options)`
