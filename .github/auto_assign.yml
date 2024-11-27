@@ -1,8 +1,0 @@
-# See More: https://github.com/kentaro-m/auto-assign
-addReviewers: false
-addAssignees: true
-numberOfReviewers: 0
-assignees:
-  - Val-istar-Guo
-numberOfAssignees: 0
-skipUsers: []
