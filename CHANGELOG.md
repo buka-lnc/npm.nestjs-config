@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.1.7](https://github.com/buka-inc/npm.nestjs-config/compare/v2.1.6...v2.1.7) (2025-02-01)
+
+
+### Performance Improvements
+
+* support nestjs@11 ([c772962](https://github.com/buka-inc/npm.nestjs-config/commit/c7729620ece765535c7abe891b68ea9c7b8dedd0))
+
 ## [2.1.6](https://github.com/buka-inc/npm.nestjs-config/compare/v2.1.5...v2.1.6) (2024-11-27)
 
 
