@@ -46,8 +46,8 @@
     "@commitlint/cli": "^19.3.0",
     "@commitlint/config-conventional": "^19.2.2",
     "@jest/globals": "^29.7.0",
-    "@nestjs/common": "^10.3.10",
-    "@nestjs/testing": "^10.3.10",
+    "@nestjs/common": "^11.0.7",
+    "@nestjs/testing": "^11.0.7",
     "@types/node": "^22.10.0",
     "@types/object-path": "^0.11.4",
     "@types/ramda": "^0.30.1",
@@ -75,7 +75,7 @@
     "type-fest": "^4.21.0"
   },
   "peerDependencies": {
-    "@nestjs/common": "^10",
+    "@nestjs/common": "^10 || ^11",
     "class-transformer": "*",
     "class-validator": "*"
   }
