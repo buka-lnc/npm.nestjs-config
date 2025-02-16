@@ -100,6 +100,34 @@ export class AppService {
 }
 ```
 
+### Nested Configuration
+
+Nested configuration is the same as using `class-validator` and `class-transformer`:
+
+```typescript
+import { Configuration } from "@buka/nestjs-config";
+import { IsString } from "class-validator";
+
+export class SubConfig {
+  // process.env.{ParentFieldName}__KEY
+  @IsString()
+  key: string;
+}
+
+@Configuration()
+export class AppConfig {
+  // process.env.SUB_FIRST__KEY
+  @ValidateNested()
+  @Type(() => SmsTemplate)
+  subFirst!: SubConfig;
+
+  // process.env.SUB_SECOND__KEY
+  @ValidateNested()
+  @Type(() => SmsTemplate)
+  subSecond!: SubConfig;
+}
+```
+
 ### Add more dotenv files
 
 ```typescript
